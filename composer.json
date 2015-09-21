@@ -1,0 +1,35 @@
+{
+    "name":         "xelax90/xelax-site-config",
+	"version":      "dev-master",
+    "description":  "ZF2 module for basic front-end configuration",
+    "type":         "module",
+	"license":      "GPL-2.0",
+    "homepage":     "https://github.com/xelax90/xelax-site-config",
+    "keywords": [
+        "zf2",
+		"front-end",
+		"config"
+    ],
+    "authors": [
+        {
+            "name": "xelax",
+            "email": "schurix@gmx.de",
+			"homepage" : "https://github.com/xelax90"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "php": ">=5.4",
+		"zendframework/zendframework": "~2.5"
+    },
+    "require-dev": {
+    },
+    "suggests": {
+        "xelax90/xelax-admin": "Toolset for easy admin backend. The generator was made for this"
+	},
+    "autoload": {
+        "psr-0": {
+            "XelaxSiteConfig\\": "src/"
+        }
+    }
+}
