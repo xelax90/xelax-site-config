@@ -30,17 +30,16 @@ use Doctrine\ORM\EntityManager;
 use XelaxSiteConfig\Entity\SiteConfig;
 use XelaxSiteConfig\Options\SiteEmailOptions;
 use Zend\I18n\Translator\Translator;
+use XelaxSiteConfig\Options\AbstractSiteOptions;
+use XelaxSiteConfig\Form\AbstractSiteConfigForm;
 
 /**
  * Description of SiteConfigController
  *
  * @author schurix
  */
-class SiteConfigController extends AbstractActionController implements SiteConfigAwareInterface{
+abstract class SiteConfigController extends AbstractActionController implements SiteConfigAwareInterface{
 	use SiteConfigAwareTrait;
-	
-	/** @var SiteEmailOptions */
-	protected $emailConfig;
 	
 	/** @var EntityManager */
 	protected $entityManager;
@@ -59,16 +58,6 @@ class SiteConfigController extends AbstractActionController implements SiteConfi
 	}
 	
 	/**
-	 * @return SiteEmailOptions
-	 */
-	public function getEmailConfig(){
-		if(null === $this->emailConfig){
-			$this->emailConfig = $this->getServiceLocator()->get(SiteEmailOptions::class);
-		}
-		return $this->emailConfig;
-	}
-	
-	/**
 	 * @return Translator
 	 */
 	public function getTranslator() {
@@ -78,41 +67,64 @@ class SiteConfigController extends AbstractActionController implements SiteConfi
 		return $this->translator;
 	}
 	
+	/**
+	 * Returns current configuration
+	 * @return AbstractSiteOptions
+	 */
+	abstract function getConfig();
+	
+	/**
+	 * Returns config form
+	 * @return AbstractSiteConfigForm
+	 */
+	abstract function getForm();
+	
+	/**
+	 * Returns dot-separated prefix for configuration
+	 * @return string
+	 */
+	abstract function getConfigPrefix();
+	
+	/**
+	 * Show current config
+	 * @return ViewModel
+	 */
 	public function indexAction(){
-		/* @var $emailForm ConfigEmailForm */
-		$emailForm = $this->getServiceLocator()->get('FormElementManager')->get(ConfigEmailForm::class);
-		$emailForm->setData($this->getEmailConfig());
+		$configForm = $this->getForm();
+		$configForm->setData($this->getConfig());
 		
-		return new ViewModel(array('emailForm' => $emailForm));
+		return new ViewModel(array('configForm' => $configForm));
 	}
 	
-	
-	public function emailAction() {
-		/* @var $emailForm ConfigEmailForm */
-		$emailForm = $this->getServiceLocator()->get('FormElementManager')->get(ConfigEmailForm::class);
+	/**
+	 * Edit config
+	 * @return ViewModel
+	 */
+	public function editAction() {
+		$configForm = $this->getForm();
         /* @var $request \Zend\Http\Request */
         $request = $this->getRequest();
 		
         if ($request->isPost()) {
 			$data = $request->getPost();
-			$emailForm->setData($data);
-			if ($emailForm->isValid()) {
-				$configData = $emailForm->getData();
-				$flatConfig = $this->flattenConfig($configData['configemail'], 'xelax_site_config.email');
+			$configForm->setData($data);
+			if ($configForm->isValid()) {
+				$configData = $configForm->getData();
+				$flatConfig = $this->flattenConfig($configData['config'], $this->getConfigPrefix());
 				$this->saveConfig($flatConfig);
 				
-				$this->flashMessenger()->addSuccessMessage($this->getTranslator()->translate('Config successfully saved'));
+				$this->flashMessenger()->addSuccessMessage($this->getTranslator()->translate('Configuration successfully saved'));
 				return $this->_redirectToIndex();
 			}
         } else {
-			$emailForm->setData($this->getEmailConfig());
+			$configForm->setData($this->getConfig());
 		}
 		
-		return new ViewModel(array('emailForm' => $emailForm));
+		return new ViewModel(array('configForm' => $configForm));
 	}
 	
 	protected function _redirectToIndex(){
-		return $this->redirect()->toRoute('zfcadmin/siteconfig', array('action' => 'index'));
+		return $this->redirect()->toRoute('zfcadmin/siteconfig');
 	}
 	
 	protected function flattenConfig($config, $prefix = ''){

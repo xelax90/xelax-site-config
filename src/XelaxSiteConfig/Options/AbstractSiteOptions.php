@@ -20,35 +20,13 @@
 
 namespace XelaxSiteConfig\Options;
 
-use Zend\Mail\Transport\Sendmail;
+use Zend\Stdlib\AbstractOptions;
 
 /**
- * Site options to set up Zend\Mail\Transport
+ * Base class for site options
  *
  * @author schurix
  */
-class SiteEmailOptions extends AbstractSiteOptions{
-	/** @var string */
-	protected $type = Sendmail::class;
+abstract class AbstractSiteOptions extends AbstractOptions{
 	
-	/** @var array */
-	protected $smtpOptions = array();
-	
-	public function getType() {
-		return $this->type;
-	}
-
-	public function getSmtpOptions() {
-		return $this->smtpOptions;
-	}
-
-	public function setType($type) {
-		$this->type = $type;
-		return $this;
-	}
-
-	public function setSmtpOptions($smtpOptions) {
-		$this->smtpOptions = $smtpOptions;
-		return $this;
-	}
 }

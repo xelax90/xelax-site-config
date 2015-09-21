@@ -1,5 +1,6 @@
 <?php
-/* 
+
+/*
  * Copyright (C) 2015 schurix
  *
  * This program is free software; you can redistribute it and/or
@@ -19,42 +20,24 @@
 
 namespace XelaxSiteConfig\Form;
 
-use Zend\InputFilter\InputFilter;
+use Zend\Form\Form;
+
+use XelaxSiteConfig\Options\AbstractSiteOptions;
 
 /**
- * ConfigEmailForm
+ * Extends form to accept AbstractSiteOptions for setData
  *
  * @author schurix
  */
-class ConfigEmailForm extends AbstractSiteConfigForm {
-	
-	public function __construct($name = "", $options = array()){
-		// we want to ignore the name passed
-		parent::__construct('ConfigEmailForm', $options);
-		$this->setAttribute('method', 'post');
-	}
-	
-	public function init(){
-		$this->setInputFilter(new InputFilter());
+abstract class AbstractSiteConfigForm extends Form {
+	public function setData($data) {
+		$parsedData = $data;
+		if($data instanceof AbstractSiteOptions){
+			$parsedData = array(
+				'config' => $data->toArray(),
+			);
+		}
 		
-		$this->add(array(
-			'name' => 'config',
-            'type' => ConfigEmailFieldset::class,
-            'options' => array(
-                'use_as_base_fieldset' => true,
-            ),
-        ));
-		
-		$this->add(array(
-			'name' => 'submit',
-			'type' => 'Submit',
-			'attributes' => array(
-				'value' => 'Save',
-				'class' => 'btn-success'
-			),
-			'options' => array(
-				'as-group' => true,
-			)
-		));
+		return parent::setData($parsedData);
 	}
 }

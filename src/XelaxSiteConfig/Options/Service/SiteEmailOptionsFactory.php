@@ -26,12 +26,24 @@ use Zend\ServiceManager\FactoryInterface;
 use Eye4web\SiteConfig\Service\SiteConfigService;
 
 class SiteEmailOptionsFactory implements FactoryInterface {
+	const CONFIG_PREFIX = 'xelax_site_config.email';
 	
     public function createService(ServiceLocatorInterface $serviceLocator) {
 		/* @var $siteConfigService SiteConfigService */
 		$siteConfigService = $serviceLocator->get(SiteConfigService::class);
 		$config = $siteConfigService->getAll();
-        return new SiteEmailOptions(isset($config['xelax_site_config']['email']) ? $config['xelax_site_config']['email'] : array());
+		
+		// get config selected by prefix
+		$prefixParts = explode('.', static::CONFIG_PREFIX);
+		$conf = $config;
+		foreach ($prefixParts as $prefix) {
+			if(isset($conf[$prefix])){
+				$conf = $conf[$prefix];
+			} else {
+				return array();
+			}
+		}
+        return new SiteEmailOptions($conf);
     }
 
 }
