@@ -34,7 +34,7 @@ $routerConfig = array(
 				'options' => array(
 					'route' => '/config[/:action]',
 					'defaults' => array(
-						'controller' => Controller\SiteConfigController::class,
+						'controller' => Controller\EmailConfigController::class,
 						'action' => 'index',
 					),
 					'constraints' => array(
@@ -64,7 +64,7 @@ $ressourceAllowRules = array(
 return array(
 	'controllers' => array(
 		'invokables' => array(
-			Controller\SiteConfigController::class => Controller\SiteConfigController::class,
+			Controller\EmailConfigController::class => Controller\EmailConfigController::class,
 		),
 	),
 	
