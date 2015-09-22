@@ -71,19 +71,33 @@ abstract class SiteConfigController extends AbstractActionController implements 
 	 * Returns current configuration
 	 * @return AbstractSiteOptions
 	 */
-	abstract function getConfig();
+	abstract public function getConfig();
 	
 	/**
 	 * Returns config form
 	 * @return AbstractSiteConfigForm
 	 */
-	abstract function getForm();
+	abstract public function getForm();
 	
 	/**
 	 * Returns dot-separated prefix for configuration
 	 * @return string
 	 */
-	abstract function getConfigPrefix();
+	abstract public function getConfigPrefix();
+	
+	/**
+	 * Returns heading of indexAction view
+	 * @return string
+	 */
+	abstract public function getIndexTitle();
+	
+	/**
+	 * Returns heading of editAction view
+	 * @return string
+	 */
+	abstract public function getEditTitle();
+	
+	
 	
 	/**
 	 * Show current config
@@ -93,7 +107,9 @@ abstract class SiteConfigController extends AbstractActionController implements 
 		$configForm = $this->getForm();
 		$configForm->setData($this->getConfig());
 		
-		return new ViewModel(array('configForm' => $configForm));
+		$view = new ViewModel(array('title' => $this->getEditTitle(), 'configForm' => $configForm));
+		$view->setTemplate('xelax-site-config/site-config/index.phtml');
+		return $view;
 	}
 	
 	/**
@@ -120,7 +136,9 @@ abstract class SiteConfigController extends AbstractActionController implements 
 			$configForm->setData($this->getConfig());
 		}
 		
-		return new ViewModel(array('configForm' => $configForm));
+		$view = new ViewModel(array('title' => $this->getEditTitle(), 'configForm' => $configForm));
+		$view->setTemplate('xelax-site-config/site-config/edit.phtml');
+		return $view;
 	}
 	
 	protected function _redirectToIndex(){

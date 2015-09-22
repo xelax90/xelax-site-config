@@ -30,15 +30,24 @@ $routerConfig = array(
 	'zfcadmin' => array(
 		'child_routes' => array(
 			'siteconfig'  => array(
-				'type' => 'segment',
+				'type' => 'literal',
 				'options' => array(
-					'route' => '/config[/:action]',
-					'defaults' => array(
-						'controller' => Controller\EmailConfigController::class,
-						'action' => 'index',
-					),
-					'constraints' => array(
-						'action' => '(index|email)',
+					'route' => '/config',
+				),
+				'may_terminate' => false,
+				'child_routes' => array(
+					'email' => array(
+						'type' => 'segment',
+						'options' => array(
+							'route' => '/email[/:action]',
+							'defaults' => array(
+								'controller' => Controller\EmailConfigController::class,
+								'action' => 'index',
+							),
+							'constraints' => array(
+								'action' => '(index|edit)',
+							),
+						),
 					),
 				),
 			),
@@ -47,7 +56,7 @@ $routerConfig = array(
 );
 
 $guardConfig = array(
-	['route' => 'zfcadmin/siteconfig' ,          'roles' => ['administrator']],
+	['route' => 'zfcadmin/siteconfig/email' ,          'roles' => ['administrator']],
 );
 
 $ressources = array(

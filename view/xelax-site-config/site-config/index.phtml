@@ -37,13 +37,13 @@ use Zend\Mvc\Controller\Plugin\FlashMessenger as PluginFlashMessenger;
 	}
 ?>
 
-<h1><?php echo $this->translate('E-Mail Configuration'); ?></h1>
+<h1><?php echo $this->translate($this->title); ?></h1>
 
 <?php if($this->isAllowed('siteconfig', 'email/edit')): ?>
 <div class="navbar filter-bar">
 	<div class="navbar-inner">
 		<div class="pull-right">
-			<a href="<?php echo $this->url('zfcadmin/siteconfig', array('action' => 'email')) ?>" class="btn btn-primary">
+			<a href="<?php echo $this->url(null, array('action' => 'edit')) ?>" class="btn btn-primary">
 				<?php echo $this->translate('Edit Configuration') ?>
 			</a>
 		</div>
@@ -51,4 +51,4 @@ use Zend\Mvc\Controller\Plugin\FlashMessenger as PluginFlashMessenger;
 </div>
 <?php endif; ?>
 
-<?php echo $this->twbForm($this->emailForm, \XelaxTwbUnmask\Form\View\Helper\Form::LAYOUT_VALUES); ?>
+<?php echo $this->twbForm($this->configForm, \XelaxTwbUnmask\Form\View\Helper\Form::LAYOUT_VALUES); ?>

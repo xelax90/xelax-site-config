@@ -58,4 +58,12 @@ class EmailConfigController extends SiteConfigController {
 	public function getConfigPrefix() {
 		return SiteEmailOptionsFactory::CONFIG_PREFIX;
 	}
+	
+	public function getIndexTitle() {
+		return gettext_noop('E-Mail Configuration');
+	}
+	
+	public function getEditTitle() {
+		return gettext_noop('E-Mail Configuration');
+	}
 }

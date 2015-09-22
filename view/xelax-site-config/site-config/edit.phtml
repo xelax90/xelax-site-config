@@ -21,8 +21,6 @@ use Zend\Mvc\Controller\Plugin\FlashMessenger as PluginFlashMessenger;
 
 ?>
 
-<h1><?php echo $this->translate('E-Mail Configuration'); ?></h1>
-
 <?php 
 	$messengerClasses = array(
         PluginFlashMessenger::NAMESPACE_INFO => 'info',
@@ -39,5 +37,7 @@ use Zend\Mvc\Controller\Plugin\FlashMessenger as PluginFlashMessenger;
 	}
 ?>
 
+<h1><?php echo $this->translate($this->title); ?></h1>
+
 <?php 
-echo $this->twbForm($this->emailForm);
+echo $this->twbForm($this->configForm);
