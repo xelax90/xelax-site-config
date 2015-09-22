@@ -40,7 +40,7 @@ class SiteEmailOptionsFactory implements FactoryInterface {
 			if(isset($conf[$prefix])){
 				$conf = $conf[$prefix];
 			} else {
-				return array();
+				$conf = array();
 			}
 		}
         return new SiteEmailOptions($conf);
