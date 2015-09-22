@@ -121,7 +121,11 @@ return array(
 				$options = $sm->get(EyeOptions::class);
 				$reader = new Reader\DoctrineORMReader($objectManager, $options);
 				return $reader;
-			}
+			},
+			Options\EmailConfigOptions::class => function (ServiceManager $sm) {
+				$config = $sm->get('Config');
+				return new Options\EmailConfigOptions(isset($config['xelax_site_config']['email']) ? $config['xelax_site_config']['email'] : array());
+			},
 		),
 	),
 				

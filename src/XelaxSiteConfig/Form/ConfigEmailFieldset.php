@@ -23,6 +23,7 @@ use Zend\Form\Fieldset;
 use Zend\InputFilter\InputFilterProviderInterface;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorAwareTrait;
+use XelaxSiteConfig\Options\EmailConfigOptions;
 
 /**
  * ConfigEmailFieldset Fieldset
@@ -32,7 +33,7 @@ use Zend\ServiceManager\ServiceLocatorAwareTrait;
 class ConfigEmailFieldset extends Fieldset implements InputFilterProviderInterface, ServiceLocatorAwareInterface{
 	use ServiceLocatorAwareTrait;
 	
-	protected $skelletonOptions;
+	protected $configOptions;
 	
 	public function __construct($name = "", $options = array()){
 		if($name == ""){
@@ -42,17 +43,17 @@ class ConfigEmailFieldset extends Fieldset implements InputFilterProviderInterfa
 	}
 	
 	/**
-	 * @return \SkelletonApplication\Options\SkelletonOptions
+	 * @return EmailConfigOptions
 	 */
-	public function getSkelletonOptions(){
-		if(null === $this->skelletonOptions){
-			$this->skelletonOptions = $this->getServiceLocator()->getServiceLocator()->get('SkelletionApplication\Options\Application');
+	public function getConfigOptions(){
+		if(null === $this->configOptions){
+			$this->configOptions = $this->getServiceLocator()->getServiceLocator()->get(EmailConfigOptions::class);
 		}
-		return $this->skelletonOptions;
+		return $this->configOptions;
 	}
 
 	public function init(){
-		$options = $this->getSkelletonOptions();
+		$options = $this->getConfigOptions();
 		
 		$this->add(array(
             'name' => 'type',
