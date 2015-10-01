@@ -142,7 +142,7 @@ abstract class SiteConfigController extends AbstractActionController implements 
 	}
 	
 	protected function _redirectToIndex(){
-		return $this->redirect()->toRoute('zfcadmin/siteconfig');
+		return $this->redirect()->toRoute(null, array('action' => 'index'));
 	}
 	
 	protected function flattenConfig($config, $prefix = ''){
