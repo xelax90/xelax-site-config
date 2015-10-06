@@ -133,6 +133,7 @@ abstract class SiteConfigController extends AbstractActionController implements 
 				return $this->_redirectToIndex();
 			}
         } else {
+			var_dump($configForm->getMessages());
 			$configForm->setData($this->getConfig());
 		}
 		

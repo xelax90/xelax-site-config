@@ -40,4 +40,9 @@ use Zend\Mvc\Controller\Plugin\FlashMessenger as PluginFlashMessenger;
 <h1><?php echo $this->translate($this->title); ?></h1>
 
 <?php 
-echo $this->twbForm($this->configForm);
+$form = $this->configForm;
+$form->prepare();
+$form->setAttribute('action', $this->url());
+$form->setAttribute('method', 'post');
+
+echo $this->twbForm($form);
