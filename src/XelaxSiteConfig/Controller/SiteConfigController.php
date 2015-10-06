@@ -133,7 +133,6 @@ abstract class SiteConfigController extends AbstractActionController implements 
 				return $this->_redirectToIndex();
 			}
         } else {
-			var_dump($configForm->getMessages());
 			$configForm->setData($this->getConfig());
 		}
 		
@@ -150,14 +149,21 @@ abstract class SiteConfigController extends AbstractActionController implements 
 		$prefix = ltrim($prefix, '.');
 		$res = array();
 		foreach ($config as $key => $value) {
-			if(is_array($value)){
+			if(is_array($value) && !$this->arrayIsSequence($value)){
 				$flat = $this->flattenConfig($value,  $prefix.'.'.$key);
 				$res = array_merge($res, $flat);
 			} else {
+				if(is_array($value)){
+					$value = json_encode($value);
+				}
 				$res[ltrim($prefix.'.'.$key, '.')] = $value;
 			}
 		}
 		return $res;
+	}
+	
+	protected function arrayIsSequence($arr){
+		return array_keys($arr) === range(0, count($arr) - 1);
 	}
 	
 	protected function saveConfig($config){

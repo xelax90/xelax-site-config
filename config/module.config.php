@@ -127,6 +127,9 @@ return array(
 				return new Options\EmailConfigOptions(isset($config['xelax_site_config']['email']) ? $config['xelax_site_config']['email'] : array());
 			},
 		),
+		'invokables' => array(
+			Options\Service\SiteConfigService::class => Options\Service\SiteConfigService::class,
+		),
 	),
 				
 	// view options

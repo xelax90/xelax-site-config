@@ -42,7 +42,7 @@ use Zend\Mvc\Controller\Plugin\FlashMessenger as PluginFlashMessenger;
 <?php 
 $form = $this->configForm;
 $form->prepare();
-$form->setAttribute('action', $this->url());
+$form->setAttribute('action', $this->url(null, array('action' => 'edit')));
 $form->setAttribute('method', 'post');
 
 echo $this->twbForm($form);

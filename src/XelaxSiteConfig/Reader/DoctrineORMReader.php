@@ -46,6 +46,14 @@ class DoctrineORMReader extends EyeReader{
 				$result[$key] = $value;
 			}
 		}
+		array_walk_recursive($result, function(&$val){
+			try{
+				$decoded = json_decode($val);
+				if(is_array($decoded)){
+					$val = $decoded;
+				}
+			} catch (\Exception $ex) {}
+		});
 		return $result;
 	}
 }
