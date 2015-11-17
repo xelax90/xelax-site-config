@@ -66,8 +66,34 @@ class SiteEmailOptions extends AbstractSiteOptions{
 		return $this;
 	}
 	
+	public function getTransportConfig(){
+		$options = array(
+			'type' => $this->getType()
+		);
+		if($this->getType() === Smtp::class){
+			$smtpOptions = $this->getSmtpOptions();
+			$connectionOptions = array();
+			if(isset($smtpOptions['connection_options'])){
+				$connectionOptions = $smtpOptions['connection_options'];
+			} else {
+				$connectionKeys = array('username', 'password', 'ssl', 'tls');
+				foreach($connectionKeys as $connectionKey){
+					if(isset($smtpOptions[$connectionKey])){
+						$connectionOptions[$connectionKey] = $smtpOptions[$connectionKey];
+						unset($smtpOptions[$connectionKey]);
+					}
+				}
+			}
+			$smtpOptions['connection_config'] = $connectionOptions;
+			$options['options'] = $smtpOptions;
+		}
+		if($this->getType() === File::class){
+			$options['options'] = $this->getFileOptions();
+		}
+		return $options;
+	}
+	
 	public function toArray() {
-		$data = parent::toArray();
 		if($this->getType() === Smtp::class){
 			$data['options'] = $this->getSmtpOptions();
 		} elseif($this->getType() === File::class){

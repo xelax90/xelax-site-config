@@ -26,8 +26,8 @@ use XelaxSiteConfig\Options\SiteEmailOptions;
 
 class TransportFactory implements FactoryInterface {
 	public function createService(ServiceLocatorInterface $serviceLocator) {
-		/** @var SiteEmailOptions $options */
+		/* @var $options SiteEmailOptions */
 		$options = $serviceLocator->get(SiteEmailOptions::class);
-		return \Zend\Mail\Transport\Factory::create($options);
+		return \Zend\Mail\Transport\Factory::create($options->getTransportConfig());
 	}
 }
