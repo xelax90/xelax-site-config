@@ -18,30 +18,16 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-namespace XelaxSiteConfig\Options\Service;
+namespace XelaxSiteConfig\Mail\Transport\Service;
 
-use GoalioMailService\Mail\Options\TransportOptions;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\ServiceManager\FactoryInterface;
-use Zend\Mail\Transport\Smtp;
 use XelaxSiteConfig\Options\SiteEmailOptions;
-use Zend\Mail\Transport\SmtpOptions;
 
-class TransportOptionsFactory implements FactoryInterface {
-
-    public function createService(ServiceLocatorInterface $serviceLocator) {
-		/* @var $config SiteEmailOptions */
-        $config = $serviceLocator->get(SiteEmailOptions::class);
-		
-		$transportConfig = array(
-			'transport_class' => $config->getType(),
-		);
-		
-		if($config->getType() === Smtp::class){
-			$transportConfig['options_class'] = SmtpOptions::class;
-			$transportConfig['transport_options'] = $config->getSmtpOptions();
-		}
-        return new TransportOptions($transportConfig);
-    }
-
+class TransportFactory implements FactoryInterface {
+	public function createService(ServiceLocatorInterface $serviceLocator) {
+		/** @var SiteEmailOptions $options */
+		$options = $serviceLocator->get(SiteEmailOptions::class);
+		return \Zend\Mail\Transport\Factory::create($options);
+	}
 }

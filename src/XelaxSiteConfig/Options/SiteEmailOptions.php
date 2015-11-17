@@ -21,6 +21,8 @@
 namespace XelaxSiteConfig\Options;
 
 use Zend\Mail\Transport\Sendmail;
+use Zend\Mail\Transport\Smtp;
+use Zend\Mail\Transport\File;
 
 /**
  * Site options to set up Zend\Mail\Transport
@@ -34,12 +36,19 @@ class SiteEmailOptions extends AbstractSiteOptions{
 	/** @var array */
 	protected $smtpOptions = array();
 	
+	/** @var array*/
+	protected $fileOptions = array();
+	
 	public function getType() {
 		return $this->type;
 	}
 
 	public function getSmtpOptions() {
 		return $this->smtpOptions;
+	}
+	
+	public function getFileOptions() {
+		return $this->fileOptions;
 	}
 
 	public function setType($type) {
@@ -50,5 +59,20 @@ class SiteEmailOptions extends AbstractSiteOptions{
 	public function setSmtpOptions($smtpOptions) {
 		$this->smtpOptions = $smtpOptions;
 		return $this;
+	}
+
+	public function setFileOptions($fileOptions) {
+		$this->fileOptions = $fileOptions;
+		return $this;
+	}
+	
+	public function toArray() {
+		$data = parent::toArray();
+		if($this->getType() === Smtp::class){
+			$data['options'] = $this->getSmtpOptions();
+		} elseif($this->getType() === File::class){
+			$data['options'] = $this->getFileOptions();
+		}
+		return $data;
 	}
 }

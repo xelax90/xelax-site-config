@@ -115,6 +115,7 @@ return array(
 	'service_manager' => array(
 		'factories' => array(
 			'goaliomailservice_options' => Options\Service\TransportOptionsFactory::class,
+			'goaliomailservice_transport' => Mail\Transport\Service\TransportFactory::class,
 			Options\SiteEmailOptions::class => Options\Service\SiteEmailOptionsFactory::class,
 			Reader\DoctrineORMReader::class => function (ServiceManager $sm){
 				$objectManager = $sm->get(EntityManager::class);
