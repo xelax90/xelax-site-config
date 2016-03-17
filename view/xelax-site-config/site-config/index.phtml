@@ -50,5 +50,11 @@ use Zend\Mvc\Controller\Plugin\FlashMessenger as PluginFlashMessenger;
 	</div>
 </div>
 <?php endif; ?>
-
+<?php 
+foreach($this->configForm->getElements() as $element){
+	if($element instanceof \Zend\Form\Element\Csrf){
+		$this->configForm->remove($element->getName());
+	}
+}
+?>
 <?php echo $this->twbForm($this->configForm, \XelaxTwbUnmask\Form\View\Helper\Form::LAYOUT_VALUES); 

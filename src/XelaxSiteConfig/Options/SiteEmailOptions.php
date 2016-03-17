@@ -94,7 +94,9 @@ class SiteEmailOptions extends AbstractSiteOptions{
 	}
 	
 	public function toArray() {
-		$data = array();
+		$data = array(
+			'type' => $this->getType(),
+		);
 		if($this->getType() === Smtp::class){
 			$data['options'] = $this->getSmtpOptions();
 		} elseif($this->getType() === File::class){
